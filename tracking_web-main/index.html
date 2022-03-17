@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <title>Tracking Api</title>
+      <script src="https://code.jquery.com/git/jquery-3.x-git.min.js"></script>
+      <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+      <!-- <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.0.js"></script>-->
+      <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        *, *:after, *:before { margin:0; padding:0; }
+
+        body{
+            margin:0;
+            padding:20px;
+            font-family: sans-serif;
+            font-size:16px;
+            background: #efefef;
+        }
+        
+        .result-item{
+                margin: 15px 0px;
+                background: #fff;
+                box-shadow: 0px 7px 10px #00000036;
+                float: left;
+                width: 100%;
+                padding: 10px;
+                border-radius: 5px;
+        }
+
+        .search_wrap{
+            width: 100%;
+            /* margin: 38px auto; */
+            margin-left: 0px;
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+
+        .search_wrap .search_box{
+            /*position: relative;*/
+            width: 100%;
+            /*height: 50px;*/
+        }
+
+        .search_wrap .search_box .input{
+            /*position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            padding: 10px 20px;*/
+            width: 100%;
+            border-radius: 2px;
+            font-size: 18px;
+            
+        }
+
+        .search_wrap .search_box .btn{
+            /*position: absolute;
+            top: 0;
+            right: 0;
+            width: 50px;
+            height: 100%;*/
+            width: 100%;
+            height: 30px;
+            background: black;
+            z-index: 1;
+            cursor: pointer;
+            text-align: center;
+            padding: 5px;
+        }
+
+        .search_wrap .search_box .btn:hover{
+            background: rgba(201, 201, 201, 1);	
+        }
+
+        .search_wrap .search_box .btn.btn_common .fas{
+            /*position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);*/
+            color: #fff;
+            font-size: 20px;
+        }
+
+        .search_wrap.search_wrap_1 .search_box .btn{
+            right: 0;
+            border-top-right-radius: 3px;
+            border-bottom-right-radius: 3px;
+        }
+
+        .search_wrap.search_wrap_1 .search_box .input {
+         /*   padding-right: 80px;*/
+         padding: 10px;
+        }
+
+        .data {
+            width: 100%;
+            border-collapse: collapse;
+          
+        }
+
+        .data td {
+            padding:10px 15px;
+            border:1px solid white;
+            text-align: left;
+            font-size:16px;
+            /* height: 45px; */
+            
+        }
+
+
+        .data tbody tr:nth-child(even) {
+            background-color: white;
+        }
+
+        .leftcolumn {
+            float: left;
+            width: 10%;
+            text-align: center;
+            
+        }
+
+        .rightcolumn {
+            float: right;
+            width: 90%;
+            padding-left: 10px;
+            padding-right: 20px;
+        }
+
+        .data {
+            float: right;
+            width: 90%;
+            /* padding-left: 20px; */
+            padding-right: 20px;
+            padding-top: 10px;
+            max-width: 90%;
+            
+        }
+        
+
+        .ton {
+            padding-top: 7px;
+        }
+
+
+        .statue {
+            padding-top: 5px;
+            padding-bottom: 7px;
+        }
+
+
+        img {
+            max-width: 50px;
+            max-height: 50px;
+            min-width: 50px;
+            min-height: 50px;
+        }
+
+        .row0 {
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .bar {
+            padding-top: 33px;
+            padding-left: 33px;
+            padding-bottom: 40px;
+        }
+
+        .node {
+            height: 10px;
+            width: 10px;
+            border-radius: 50%;
+            display:inline-block;
+            transition: all 1000ms ease;
+            background-color: rgba(201, 201, 201, 1); 
+        }
+
+        .divider {
+            height: 25px;
+            width: 2px;
+            display:inline-block;
+            /* margin-left: 2px; */
+            transition: all 800ms ease;
+            background-color: rgba(201, 201, 201, 1); 
+        }
+
+        li p {
+            margin-left: 25px;
+        }
+
+        li {
+            list-style: none;
+            line-height: 1px;
+        }
+
+        .green {
+            background-color:#0bb034;
+        }
+
+        .date {
+            margin-bottom: 19.5px;
+            margin-top: 19.5px;
+        }
+
+
+        /*responsive*/
+
+        @media(max-width: 1280px) {
+
+            #icon.leftcolumn{
+                width: 10%;
+            }
+            .leftcolumn {
+                width: auto;
+            }
+            .bar {
+                padding-left: 10px;
+            }
+  
+        }
+
+        @media(max-width: 1072px) {
+            .data {
+                width: 85%;
+                
+            }
+        }
+
+        @media(max-width: 1000px) {
+            .data {
+                width: 85%;
+                /* padding-top: 50px; */
+            }
+
+            .bar {
+                padding-top: 40px;
+            }
+        }
+
+
+        @media(max-width: 800px) {
+            .rightcolumn {
+                padding-left: 10px;
+            }
+
+            .data {
+                width: 80%;
+                padding-top: 83px;
+            }
+
+ 
+    
+        }
+
+        @media(max-width: 680px) {
+            .rightcolumn {
+                padding-left: 50px;
+            }
+
+            .divider {
+                height: 80px;
+            }
+
+            .node {
+                width: 11px;
+                height: 11px;
+            }
+
+            .data {
+                padding-top: 85px;
+            }
+
+            .date {
+                margin-bottom: 27px;
+                margin-top: 27px;
+            }
+
+        }
+
+        @media(max-width: 499px) {
+            .leftcolumn {
+                width: 5%;
+            }
+            .rightcolumn {
+                padding-left: 60px;
+                padding-right: 0;
+            }
+
+            .ton {
+                padding-top: 10px;
+            }
+
+
+            .data td {
+                padding: 10px;
+                font-size: 10px;
+            } 
+
+            .bar {
+                padding-left: 10px;
+            }
+
+            .divider {
+                height: 50px;
+            }
+        }
+
+        @media (max-width: 342px) {
+            .table {
+                width: 30%;
+            }
+
+            .data td {
+                padding: 5px;
+                font-size: 10px;
+            } 
+
+            .bar {
+                padding-left: 10px;
+            }
+
+            .divider {
+                height: 49px;
+            }
+
+            .data td {
+                padding:7px 10px;
+                /* border:1px solid white; */
+                text-align: left;
+                font-size:12px;
+                /* height: 60px; */
+            
+            }
+
+            
+
+
+        }
+
+      </style>
+
+    </head>
+   
+    <body>
+        
+        <h1>Order Number</h1>
+        <!--search bar & button-->
+        <div class="search_wrap search_wrap_1">
+            <div class="search_box">
+                <!--<input type="search" name="" class="input searchapi" placeholder="Type your tracking code here (separate by ',' )" id="userInput">-->
+                
+                <textarea class="input searchapi" rows="3" placeholder="Type your tracking code here (One order number per line. )" id="userInput"></textarea>
+                
+                <div class="btn btn_common" id="btnFetch">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+        </div>
+
+        <h5>testing number: LFC21070206586378SG  GTS10201500034HK   GTS12345678901HK</h5>
+        <div id="result_container" class="result_container">
+
+        </div>
+    
+      
+      <script>
+        //var result_container = document.getElementById("result_container");
+        
+        //testing value = GTS10201500034HK,GTS12345678901HK
+        
+
+      jQuery(function(){
+            jQuery("#btnFetch").click(function(){init_api();});
+            jQuery(".searchapi.input").submit(function(){init_api();});
+            jQuery(".searchapi.input").keypress(function(e){
+                if(e.which == 13){//Enter key pressed
+                    init_api();
+                }
+            });
+            
+
+        });
+      
+      function init_api(){
+        
+            
+            var __lang = "zh-TW"; //  en-US, zh_CN, zh-TW
+            
+            var userInput1 = document.getElementById("userInput").value;
+            //var userInput = userInput1.split(",");
+            //var userInput = userInput1.split('\n');
+            var userInput = userInput1.split(/\n/);
+            
+            
+                //$.each($('#data').val().split(\n/), function(i, line){
+
+            
+            for (var a = 0; a < userInput.length; a++){
+                userInput[a] = userInput[a].replace(/\s/g, '');
+            }
+            
+            var filtered_userInput = userInput.filter(function(value, index, arr){ 
+                return value != "";
+            });
+            
+            //console.log(userInput);
+            console.log(filtered_userInput);
+
+            var arr_trackingNos = filtered_userInput;
+            var _dataJSON = {"language":__lang,"trackingNos": arr_trackingNos};   // ***Language switch here
+
+
+                jQuery.ajax({
+                    url: "http://oms.gtschain.com/api/openapi/shipmenttrace/traceShipment",
+                    headers: {
+                        'ApiToken':'8SDSADFA923&*@SDASDA'
+                    },
+                    method: 'POST',
+                    dataType: 'json',
+                    contentType: "application/json",
+                    data: JSON.stringify(_dataJSON),
+                    success: function(data){
+                        console.log(_dataJSON);
+                        console.log(data);
+                        $(".result_container").html('');   //".result-item order_"+a.toString()
+                        
+                        
+                        for (var a = 0; a < data.data.length; a++){
+                            
+                            
+                            function changeDate(date){
+                                var output = 
+                                            //" "+(Intl.DateTimeFormat('en-US', options).format(date))+
+                                            " "+date.getFullYear()+
+                                            "-"+date.getMonth()+
+                                            "-"+date.getDate()+
+                                            "  "+date.getHours()+
+                                            ":"+date.getMinutes()+
+                                            ":"+date.getSeconds();
+                                return output
+                            }
+                            
+                        
+                        $(".result_container").append('<div class="result-item order_'+a.toString()+'"></div><!--result-item -->');
+                        
+                            
+                            
+                            //append icon, right1
+                            if (!data.data[a].success){ 
+                                $(".result-item.order_"+a.toString()).append('<div class="leftcolumn"><img id="logo'+a.toString()+'" src="Picture3.png" alt="tick"></div>');
+                                $(".result-item.order_"+a.toString()).append('<div id="right1" class="rightcolumn"><div class="ton"><div style="display: inline;"><strong>Order number : </strong> </div><div id="ton'+a.toString()+'" style="display: inline;"></div></div><div class="statue"><div style="display: inline;"><strong>Status : </strong></div><div id="statue'+a.toString()+'" style="color: red; display: inline;""><strong>Order Not Found</strong></div></div></div>');
+                                
+                                //document.getElementById("ton"+a.toString()).innerHTML = data.data[a].trackingNo;
+                                document.getElementById("ton"+a.toString()).innerHTML = data.data[a].trackingNo;
+                            }
+
+                            else{
+                                
+
+                                //append icon, right1, orderHis
+                                
+                                
+                                $(".result-item.order_"+a.toString()).append('<div id="icon" class="leftcolumn"><img id="logo'+a.toString()+'" src="Picture2.png" alt="tick"></div>');
+                                $(".result-item.order_"+a.toString()).append('<div id="right1" class="rightcolumn"><div class="ton"><div style="display: inline;"><strong>Order number : </strong> </div><div id="ton'+a.toString()+'" style="display: inline;"></div></div><div class="statue"><div style="display: inline;"><strong>Status : </strong></div><div id="statue'+a.toString()+'" style="color: green; display: inline;"><strong></strong></div></div></div>');
+                                document.getElementById("ton"+a.toString()).innerHTML = data.data[a].trackingNo;
+                                $(".result-item.order_"+a.toString()).append('<div id="orderHis" class="rightcolumn row0" ><strong>Order History:</strong></div>');
+                                if (data.data[a].traces.length == 1){
+                                    $(".result-item.order_"+a.toString()).append('<div class="leftcolumn bar" id="bar"> <ul id="progress'+a.toString()+'"></ul></div>');
+                                    $("#progress"+a.toString()).append('<li><div class="node" style="background-color: green;"></div>');
+                                } else if (data.data[a].traces.length > 1){
+
+                                    //all the date are saved in array save
+                                    var save = [];
+                                    for (var c = 0; c < data.data[a].traces.length; c++){
+                                        var temp2 = data.data[a].traces[c].event_time.split(" ");
+                                        var boo = false;
+                                        for (var d = 0; d < save.length; d++){
+                                            if (save[d] == temp2[0]){
+                                                boo = true;
+                                            }
+                                        }
+                                        if(boo == false){
+                                            save.push(temp2[0]);
+                                        } 
+                                    }
+
+                                    //print the date tag
+                                    $(".result-item.order_"+a.toString()).append('<div class="leftcolumn bar" id="bar"> <ul id="progress'+a.toString()+'"></ul></div>');
+                                    $("#progress"+a.toString()).append('<li><div class="date">'+save[0]+'</div></li>');
+                                    var count1 = 0;
+                                    var count2 = 0;
+                                    for (var e = 0; e < data.data[a].traces.length; e++){
+                                        var check2 = data.data[a].traces[e].event_time.split(" ");
+                                        if (check2[0] != save[count2]){
+                                            for (var b = 0; b < count1-1; b++){
+                                                $("#progress"+a.toString()).append('<li><div class="node"></div></li><li><div class="divider"></div></li>');
+                                            }
+                                            $("#progress"+a.toString()).append('<li><div class="node"></div></li>');
+                                            count2 += 1;
+                                            $("#progress"+a.toString()).append('<li><div class="date">'+save[count2]+'</div></li>');
+                                            count1 = 1;
+                                        }else if (e == data.data[a].traces.length-1) {
+                                            count1 += 1;
+                                            for (var b = 0; b < count1-1; b++){
+                                                $("#progress"+a.toString()).append('<li><div class="node"></div></li><li><div class="divider"></div></li>');
+                                            }
+                                            $("#progress"+a.toString()).append('<li><div class="node" style="background-color: green;"></div></li>');
+                                        }else{
+                                            count1 += 1 ;
+                                            
+                                        }
+                                    }
+                                }
+
+                                $(".result-item.order_"+a.toString()).append('<div id="data'+a.toString()+'" class="data"></div>');
+                                var temp = document.getElementById("data"+a.toString());
+
+                                //UPDATING THE STATUS AND DELIVERYSTATUS
+                                var deliveryStatus = data.data[a].deliveryStatus;
+                                var status = data.data[a].status;
+                                document.getElementById("statue"+a.toString()).innerHTML = status;
+                                if (deliveryStatus === "Delivered"){
+                                    document.getElementById("logo"+a.toString()).src = "Picture2.png";
+                                }else if (deliveryStatus === "Customs Hold" || "Brokerage Hold" || "Exceptions"){
+                                    document.getElementById("logo"+a.toString()).src = "Picture3.png";
+                                } else {
+                                    document.getElementById("logo"+a.toString()).src = "Picture1.png";
+                                }   
+
+                                // EXTRACT VALUE FOR HTML HEADER. 
+                                var col = [];
+                                for (var i = 0; i < data.data[a].traces.length; i++) {
+                                    for (var key in data.data[a].traces[i]) {
+                                        if (col.indexOf(key) === -1) {
+                                            col.push(key);
+                                        }
+                                    }
+                                }
+                                
+                                // CREATE DYNAMIC TABLE.
+                                var table = document.createElement("table");
+                                var tr = table.insertRow(-1);
+                            
+                                // ADD JSON DATA TO THE TABLE AS ROWS.
+                                for (var i = 0; i < data.data[a].traces.length; i++) {
+                                    tr = table.insertRow(-1);
+                                    for (var j = 0; j < col.length; j++) {
+                                        //CHANGING THE DATE
+                                        var tabCell = tr.insertCell(-1);
+                                        if (j==2){
+                                            var date1 = data.data[a].traces[i].event_time.split(" ");
+                                            var date2 = data.data[a].traces[i][col[j]] 
+                                            date2 = date1[1];
+                                            tabCell.innerHTML = date2;
+                                        }
+                                        else{
+                                            tabCell.innerHTML = data.data[a].traces[i][col[j]];
+                                        }
+                                        
+                                        
+                                    }
+                                }         
+                                
+                                //temp.innerHTML = "";
+                                temp.appendChild(table);
+                                
+                                
+                            }
+                            
+                            
+                        }   
+                    },
+                    error: function(errMsg) {
+                        console.log(errMsg);
+                    }
+                
+              
+            });
+        return false;
+      
+      }
+
+
+        
+        
+      </script>
+    </body>
+</html>
